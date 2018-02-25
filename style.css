@@ -1,9 +1,16 @@
+@font-face {
+    font-family: "WhitneyMedium";
+    src: url('WhitneyMedium.ttf');
+}
+
 html,
 body {
     padding: 0;
     margin: 0;
     height: 100%;
     min-height: 100%;
+    background-color: lightgray;
+    font-family: WhitneyMedium;
 }
 
 .quad {
@@ -25,4 +32,24 @@ body {
     display: -webkit-flex;
     display: flex;
     flex: 1 0 auto;
+}
+
+#header {
+    position: absolute;
+        top: 0px;
+        left: 0px;
+        right: 0px;
+    background-color: #6495ED;
+    z-index: 1;
+    padding-top: 10px;
+}
+
+#title {
+    text-align: center;
+    font-size: 35px;
+    font-weight: bold;
+}
+
+#content {
+    margin-top: 90px;
 }
