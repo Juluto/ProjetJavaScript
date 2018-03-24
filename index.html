@@ -42,7 +42,7 @@
                 <div>
                     <form class="form-inline my-2 my-lg-0" ng-submit="searchAction()">
                         <input type="search" class="form-control" name="" id="" aria-describedby="helpId" placeholder="Rechercher" ng-model="searchBar">
-                        <input type="submit" class="form-control btn btn-primary" value="Ok"/>
+                        <input type="submit" class="form-control btn btn-primary" value="Ok" />
                     </form>
                 </div>
                 <p id="notFoundBuy">{{name}} not found</p>
@@ -57,22 +57,26 @@
                         </tr>
                     </thead>
                     <tbody id="tableBuy">
-                        <tr>
-                            <td scope="row">{{nameFound}}</td>
-                            <td>{{price}} $</td>
-                            <td><input id="numberBuy" type="number" min="1" ng-model="quantityBuy"></td>
-                            <td id="totalBuy"></td>
-                            <td>
-                                <a name="" id="buttonBuy" class="btn btn-primary" href="#" role="button">Acheter</a>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td scope="row"></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                        </tr>
+                        <form class="form-inline my-2 my-lg-0" ng-submit="buyAction()">
+                            <tr>
+                                <td scope="row" ng-model="nameFound">{{nameFound}}</td>
+                                <td>{{price}} $</td>
+                                <td ng-model="quantityBuy">
+                                    <input id="numberBuy" type="number" min="1">
+                                </td>
+                                <td id="totalBuy"></td>
+                                <td>
+                                    <input type="submit" class="form-control btn btn-primary" value="Acheter" />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td scope="row"></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                        </form>
                     </tbody>
                 </table>
             </div>
@@ -88,16 +92,18 @@
                     <thead>
                         <tr>
                             <th>Nom</th>
-                            <th>Nombre</th>
                             <th>Prix</th>
+                            <th>Nombre</th>
+                            <th>Total</th>
                             <th>Détails</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr>
                             <td scope="row">truc</td>
-                            <td>10</td>
                             <td>2$</td>
+                            <td>10</td>
+                            <td>110$</td>
                             <td>
                                 <a name="" id="" class="btn btn-primary" href="#" role="button">Voir</a>
                             </td>
