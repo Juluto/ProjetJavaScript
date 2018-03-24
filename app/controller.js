@@ -14,6 +14,7 @@ angular.module('myApp').controller('buyAction', ['$scope', '$http', function ($s
                 priceBuy = $scope.price;
                 quantityBuy = 1;
                 $("#numberBuy").val(1);
+                $("#totalBuy").empty();
                 $("#totalBuy").append($scope.price + " $");
                 $("#tableBuy").show();
             }
@@ -24,21 +25,54 @@ angular.module('myApp').controller('buyAction', ['$scope', '$http', function ($s
     }
 
     $scope.buyAction = function () {
+        var actionAlreadyBuy = false;
+        var quantityAlreadyBuy;
         quantityBuy = parseInt(quantityBuy);
         var data = {
             'name': $scope.nameFound,
             'quantity': quantityBuy
         };
-        $http.post("http://localhost:3000/buyAction", data, {
-            headers: {
-                'Content-Type': 'application/json',
-                'Accept': 'application/json'
+
+        $http.get("http://localhost:3000/buyAction/").then(successCallBack, errorCallBack);
+        function successCallBack(response) {
+            console.log(response);
+            for (let i = 0; i < response.data.length; i++) {
+                if (response.data[i].name === $scope.nameFound) {
+                    actionAlreadyBuy = true;
+                    quantityAlreadyBuy = response.data[i].quantity;
+                }
             }
-        }).then(function (response) {
-            window.location.reload();
-        }, function error(error) {
+            if (actionAlreadyBuy) {
+                var dataModified = {
+                    'name': $scope.nameFound,
+                    'quantity': quantityBuy + quantityAlreadyBuy
+                };
+                $http.put("http://localhost:3000/buyAction", dataModified, {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json'
+                    }
+                }).then(function (response) {
+                    window.location.reload();
+                }, function error(error) {
+                    console.log(error);
+                });
+            } else {
+                $http.post("http://localhost:3000/buyAction", data, {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json'
+                    }
+                }).then(function (response) {
+                    window.location.reload();
+                }, function error(error) {
+                    console.log(error);
+                });
+            }
+        }
+        function errorCallBack(error) {
             console.log(error);
-        });
+        }
     }
 }]);
 
