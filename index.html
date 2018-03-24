@@ -87,7 +87,7 @@
 
 
             <h1>Liste des actions achetées</h1>
-            <div class="col-md-6 quad">
+            <div class="col-md-6 quad" ng-controller="listAction">
                 <table class="table">
                     <thead>
                         <tr>
@@ -99,17 +99,18 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td scope="row">truc</td>
-                            <td>2$</td>
-                            <td>10</td>
-                            <td>110$</td>
+                        <tr ng-repeat="x in Action">
+                            <td scope="row">{{x.name}}</td>
+                            <td>{{x.price}} $</td>
+                            <td>{{x.quantity}}</td>
+                            <td>{{x.totalAction}} $</td>
                             <td>
                                 <a name="" id="" class="btn btn-primary" href="#" role="button">Voir</a>
                             </td>
                         </tr>
                         <tr>
                             <td scope="row"></td>
+                            <td></td>
                             <td></td>
                             <td></td>
                             <td></td>

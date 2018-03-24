@@ -1,6 +1,7 @@
 var quantityBuy;
 var priceBuy;
 var totalBuy;
+var total;
 
 $(document).ready(function () {
     $("#tableBuy").hide();

@@ -41,3 +41,26 @@ angular.module('myApp').controller('buyAction', ['$scope', '$http', function ($s
         });
     }
 }]);
+
+angular.module('myApp').controller('listAction', ['$scope', '$http', function ($scope, $http) {
+
+    $scope.Action = {};
+
+    $http.get("http://localhost:3000/buyAction/").then(successCallBack, errorCallBack);
+    function successCallBack(response) {
+        for (let i = 0; i < response.data.length; i++) {
+            $http.get("http://localhost:3000/stock/" + response.data[i].name).then(success, error);
+            function success(stock) {
+                response.data[i].price = stock.data.body.delayedPrice;
+                response.data[i].totalAction = stock.data.body.delayedPrice * response.data[i].quantity;
+            }
+            function error(error) {
+                console.log(error);
+            }
+        }
+        $scope.Action = response.data;
+    }
+    function errorCallBack(error) {
+        console.log(error);
+    }
+}]);
