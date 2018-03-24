@@ -93,6 +93,7 @@ angular.module('myApp').controller('listAction', ['$scope', '$http', function ($
             function success(stock) {
                 response.data[i].price = stock.data.body.delayedPrice;
                 response.data[i].totalAction = stock.data.body.delayedPrice * response.data[i].quantity;
+                response.data[i].benefice = response.data[i].price - stock.data.body.delayedPrice;
             }
             function error(error) {
                 console.log(error);
