@@ -1,5 +1,6 @@
 var quantityBuy;
 var priceBuy;
+var priceBuy;
 var totalBuy;
 var total;
 
@@ -7,6 +8,7 @@ $(document).ready(function () {
     $("#tableBuy").hide();
     $("#notFoundBuy").hide();
     $("#numberBuy").val(1);
+    $("#tableSell").hide();
 
     $("#numberBuy").on('input', function () {
         if ($(this).val() == "") {

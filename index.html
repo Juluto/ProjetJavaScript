@@ -64,7 +64,7 @@
                                 <td ng-model="quantityBuy">
                                     <input id="numberBuy" type="number" min="1">
                                 </td>
-                                <td id="totalBuy"></td>
+                                <td id="totalBuy" ng-model="priceBuy"></td>
                                 <td>
                                     <input type="submit" class="form-control btn btn-primary" value="Acheter" />
                                 </td>
@@ -81,52 +81,101 @@
                 </table>
             </div>
 
+            <h1>Cours de la bourse recherchée</h1>
             <div class="col-md-6 quad">
                 <canvas id="myChart"></canvas>
             </div>
 
 
             <h1>Liste des actions achetées</h1>
-            <div class="col-md-6 quad" ng-controller="listAction">
-                <table class="table">
-                    <thead>
-                        <tr>
-                            <th>Nom</th>
-                            <th>Prix</th>
-                            <th>Nombre</th>
-                            <th>Total</th>
-                            <th>Détails</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr ng-repeat="x in Action">
-                            <td scope="row">{{x.name}}</td>
-                            <td>{{x.price}} $</td>
-                            <td>{{x.quantity}}</td>
-                            <td>{{x.totalAction}} $</td>
-                            <td>
-                                <a name="" id="" class="btn btn-primary" href="#" role="button">Voir</a>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td scope="row"></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-            <h1>Détails</h1>
-            <div class="col-md-6 quad">
-                <ul class="list-group">
-                    <li class="list-group-item">Nom</li>
-                    <li class="list-group-item">Symbole</li>
-                    <li class="list-group-item">Prix d'achat</li>
-                    <li class="list-group-item">Nombre achetés</li>
-                    <li class="list-group-item">Prix actuel</li>
-                </ul>
+            <div ng-controller="listAction">
+                <div class="col-md-6 quad">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Nom</th>
+                                <th>Prix</th>
+                                <th>Nombre</th>
+                                <th>Total</th>
+                                <th>Détails</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="x in Action">
+                                <form class="form-inline my-2 my-lg-0" ng-submit="seeAction()">
+                                    <td scope="row" ng-model="name">{{x.name}}</td>
+                                    <td>{{x.price}} $</td>
+                                    <td>{{x.quantity}}</td>
+                                    <td>{{x.totalAction}} $</td>
+                                    <td>
+                                        <a href="#" class="btn btn-primary" role="button" ng-click="seeAction()" ng-value="x.name">Voir</a>
+                                    </td>
+                                </form>
+                            </tr>
+                            <tr>
+                                <td scope="row"></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <h1>Détails</h1>
+                <div class="col-md-6 quad">
+                    <table class="table" id="tableSell">
+                        <form class="form-inline my-2 my-lg-0" ng-submit="buyAction()">
+                            <tr>
+                                <th>Nom</th>
+                                <td>{{name}}</td>
+                            </tr>
+                            <tr>
+                                <th>Symbole</th>
+                                <td>{{symbol}}</td>
+                            </tr>
+                            <tr>
+                                <th>Prix d'achat</th>
+                                <td>{{ownBuy}}</td>
+                            </tr>
+                            <tr>
+                                <th>Nombre achetés</th>
+                                <td>{{quantity}}</td>
+                            </tr>
+                            <tr>
+                                <th>Prix actuel</th>
+                                <td>{{price}}</td>
+                            </tr>
+                            <tr>
+                                <th>Vendre</th>
+                            </tr>
+                            <tr>
+                                <td>Quantité :</td>
+                                <td ng-model="quantitySell">
+                                    <input id="numberBuy" type="number" min="1">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Bénéfice :</td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <td>
+                                    <input type="submit" class="form-control btn btn-primary" value="Vendre" />
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>Vendre tout</th>
+                                <td>Bénéfice total : </td>
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <td><a href="#" class="btn btn-primary" role="button" ng-click="seeAction()" ng-value="x.name">Vendre tout</a></td>
+                            </tr>
+                        </form>
+                    </table>
+                </div>
             </div>
         </div>
     </div>

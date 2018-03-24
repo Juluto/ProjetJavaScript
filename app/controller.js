@@ -27,10 +27,13 @@ angular.module('myApp').controller('buyAction', ['$scope', '$http', function ($s
     $scope.buyAction = function () {
         var actionAlreadyBuy = false;
         var quantityAlreadyBuy;
+        var priceAlreadyBuy;
         quantityBuy = parseInt(quantityBuy);
+        priceBuy = parseInt(priceBuy);
         var data = {
             'name': $scope.nameFound,
-            'quantity': quantityBuy
+            'quantity': quantityBuy,
+            'price': priceBuy
         };
 
         $http.get("http://localhost:3000/buyAction/").then(successCallBack, errorCallBack);
@@ -40,12 +43,14 @@ angular.module('myApp').controller('buyAction', ['$scope', '$http', function ($s
                 if (response.data[i].name === $scope.nameFound) {
                     actionAlreadyBuy = true;
                     quantityAlreadyBuy = response.data[i].quantity;
+                    priceAlreadyBuy = response.data[i].price;
                 }
             }
             if (actionAlreadyBuy) {
                 var dataModified = {
                     'name': $scope.nameFound,
-                    'quantity': quantityBuy + quantityAlreadyBuy
+                    'quantity': quantityBuy + quantityAlreadyBuy,
+                    'price': priceBuy + priceAlreadyBuy
                 };
                 $http.put("http://localhost:3000/buyAction", dataModified, {
                     headers: {
@@ -79,6 +84,7 @@ angular.module('myApp').controller('buyAction', ['$scope', '$http', function ($s
 angular.module('myApp').controller('listAction', ['$scope', '$http', function ($scope, $http) {
 
     $scope.Action = {};
+    $scope.OneAction = {};
 
     $http.get("http://localhost:3000/buyAction/").then(successCallBack, errorCallBack);
     function successCallBack(response) {
@@ -96,5 +102,34 @@ angular.module('myApp').controller('listAction', ['$scope', '$http', function ($
     }
     function errorCallBack(error) {
         console.log(error);
+    }
+
+
+    $scope.seeAction = function () {
+        $http.get("http://localhost:3000/action/" + this.x.name).then(successCallBack, errorCallBack);
+        function successCallBack(response) {
+            console.log(response);
+            $http.get("http://localhost:3000/nameAction/" + response.data[0].name).then(successCallBack, errorCallBack);
+            function successCallBack(responseNameAction) {
+                $scope.name = responseNameAction.data.body.companyName;
+            }
+            function errorCallBack(error) {
+                console.log(error);
+            }
+            $scope.symbol = response.data[0].name;
+            $scope.quantity = response.data[0].quantity;
+            $scope.ownBuy = response.data[0].price;
+            $http.get("http://localhost:3000/stock/" + response.data[0].name).then(successPriceAction, errorPriceAction);
+            function successPriceAction(responsePriceAction) {
+                $scope.price = responsePriceAction.data.body.delayedPrice + " $";
+            }
+            function errorPriceAction(error) {
+                console.log(error);
+            }
+        }
+        function errorCallBack(error) {
+            console.log(error);
+        }
+        $("#tableSell").show();
     }
 }]);
