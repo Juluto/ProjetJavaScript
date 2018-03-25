@@ -67,7 +67,7 @@
                                 <td scope="row" ng-model="nameFound">{{nameFound}}</td>
                                 <td>{{price}} $</td>
                                 <td ng-model="quantityBuy">
-                                    <input class="number" id="numberBuy" type="number" min="1">
+                                    <input class="number" id="numberBuy" type="number" min="1" required>
                                 </td>
                                 <td id="totalBuy" ng-model="priceBuy"></td>
                                 <td>
@@ -185,7 +185,7 @@
                             <tr>
                                 <td>Gain : {{gainTotal}}</td>
                                 <td>
-                                    <a href="#" class="btn btn-primary" role="button" ng-click="sellAction()" ng-value="gainTotal">Vendre tout</a>
+                                    <a href="#" class="btn btn-primary" role="button" ng-click="sellAction()" ng-value="symbol">Vendre tout</a>
                                 </td>
                             </tr>
                         </form>

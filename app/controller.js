@@ -168,4 +168,13 @@ angular.module('myApp').controller('listAction', ['$scope', '$http', function ($
         $("#numberSell").val(1);
         $("#tableSell").show();
     }
+
+    $scope.sellAction = function () {
+        $http.delete("http://localhost:3000/sellAction/" + this.symbol)
+        .then(function (response) {
+            window.location.reload();
+        }, function error(error) {
+            console.log(error);
+        });
+    }
 }]);
