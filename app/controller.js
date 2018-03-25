@@ -18,6 +18,22 @@ angular.module('myApp').controller('buyAction', ['$scope', '$http', function ($s
                 $("#totalBuy").empty();
                 $("#totalBuy").append($scope.price + " $");
                 $("#tableBuy").show();
+
+                $http.get("http://localhost:3000/historyAction/" + response.data.body.symbol).then(successCallBack, errorCallBack);
+                function successCallBack(responseHistory) {
+                    label = response.data.body.symbol;
+                    x = [];
+                    data = [];
+                    for (let i = 0; i < responseHistory.data.body.length; i++) {
+                        x.push(responseHistory.data.body[i].date);
+                        data.push(responseHistory.data.body[i].close)
+                    }
+                    drawGraph();
+                }
+                function errorCallBack(responseHistory) {
+                    console.log(error);
+                }
+
             }
         }
         function errorCallBack(error) {
