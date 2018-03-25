@@ -66,6 +66,10 @@ body {
     font-weight: bold;
 }
 
+#chart {
+    height: 250px;
+}
+
 
 /* Input text */
 .group 			  { 
