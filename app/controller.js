@@ -12,6 +12,7 @@ angular.module('myApp').controller('buyAction', ['$scope', '$http', function ($s
                 $scope.nameFound = response.data.body.symbol;
                 $scope.price = response.data.body.delayedPrice;
                 priceBuy = $scope.price;
+                totalBuy = $scope.price;
                 quantityBuy = 1;
                 $("#numberBuy").val(1);
                 $("#totalBuy").empty();
@@ -29,11 +30,11 @@ angular.module('myApp').controller('buyAction', ['$scope', '$http', function ($s
         var quantityAlreadyBuy;
         var priceAlreadyBuy;
         quantityBuy = parseInt(quantityBuy);
-        priceBuy = parseFloat(priceBuy);
+        totalBuy = parseFloat(totalBuy);
         var data = {
             'name': $scope.nameFound,
             'quantity': quantityBuy,
-            'price': priceBuy
+            'price': totalBuy
         };
 
         $http.get("http://localhost:3000/buyAction/").then(successCallBack, errorCallBack);
@@ -50,7 +51,7 @@ angular.module('myApp').controller('buyAction', ['$scope', '$http', function ($s
                 var dataModified = {
                     'name': $scope.nameFound,
                     'quantity': quantityBuy + quantityAlreadyBuy,
-                    'price': priceBuy + priceAlreadyBuy
+                    'price': totalBuy + priceAlreadyBuy
                 };
                 $http.put("http://localhost:3000/buyAction", dataModified, {
                     headers: {
@@ -91,7 +92,7 @@ angular.module('myApp').controller('listAction', ['$scope', '$http', function ($
         for (let i = 0; i < response.data.length; i++) {
             $http.get("http://localhost:3000/stock/" + response.data[i].name).then(success, error);
             function success(stock) {
-                response.data[i].benefice = (response.data[i].quantity * stock.data.body.delayedPrice) - (response.data[i].price * response.data[i].quantity);
+                response.data[i].benefice = (response.data[i].quantity * stock.data.body.delayedPrice) - response.data[i].price;
                 if (response.data[i].benefice > 0) {
                     response.data[i].benefice = "+" + response.data[i].benefice;
                     $("#benefice" + response.data[i].name).css('color', 'green');
@@ -135,10 +136,10 @@ angular.module('myApp').controller('listAction', ['$scope', '$http', function ($
                 $("#gain").append(responsePriceAction.data.body.delayedPrice + " $");
                 priceSell = responsePriceAction.data.body.delayedPrice;
                 $scope.gainTotal = response.data[0].quantity * responsePriceAction.data.body.delayedPrice + " $";
-                $scope.benefice = responsePriceAction.data.body.delayedPrice - (response.data[0].price / 1) + " $";
-                $scope.beneficeTotal = (response.data[0].quantity * responsePriceAction.data.body.delayedPrice) - (response.data[0].price * response.data[0].quantity) + " $";
+                $scope.benefice = responsePriceAction.data.body.delayedPrice - (response.data[0].price / response.data[0].quantity) + " $";
+                $scope.beneficeTotal = (response.data[0].quantity * responsePriceAction.data.body.delayedPrice) - response.data[0].price + " $";
                 priceBenefice = response.data[0].price;
-                benefice = responsePriceAction.data.body.delayedPrice - response.data[0].price;
+                benefice = responsePriceAction.data.body.delayedPrice - (response.data[0].price / response.data[0].quantity);
                 if (benefice > 0) {
                     $scope.benefice = "+" + $scope.benefice;
                     $("#benefice").css('color', 'green');
@@ -147,7 +148,7 @@ angular.module('myApp').controller('listAction', ['$scope', '$http', function ($
                 } else if (benefice < 0) {
                     $("#benefice").css('color', 'red');
                 }
-                beneficeTotal = (response.data[0].quantity * responsePriceAction.data.body.delayedPrice) - (response.data[0].price * response.data[0].quantity);
+                beneficeTotal = (response.data[0].quantity * responsePriceAction.data.body.delayedPrice) - response.data[0].price;
                 if (beneficeTotal > 0) {
                     $scope.beneficeTotal = "+" + $scope.beneficeTotal;
                     $("#beneficeTotal").css('color', 'green');

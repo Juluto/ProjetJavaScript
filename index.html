@@ -132,7 +132,7 @@
                 <h1>Détails</h1>
                 <div class="col-md-6 quad">
                     <table class="table" id="tableSell">
-                        <form class="form-inline my-2 my-lg-0" ng-submit="buyAction()">
+                        <form class="form-inline my-2 my-lg-0" ng-submit="sellAction()">
                             <tr>
                                 <th>Nom</th>
                                 <td>{{name}}</td>
@@ -185,7 +185,7 @@
                             <tr>
                                 <td>Gain : {{gainTotal}}</td>
                                 <td>
-                                    <a href="#" class="btn btn-primary" role="button" ng-click="seeAction()" ng-value="x.name">Vendre tout</a>
+                                    <a href="#" class="btn btn-primary" role="button" ng-click="sellAction()" ng-value="gainTotal">Vendre tout</a>
                                 </td>
                             </tr>
                         </form>
