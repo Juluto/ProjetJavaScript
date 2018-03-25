@@ -8,6 +8,7 @@ var priceSell;
 var gain;
 var priceBenefice;
 var benefice;
+var beneficeTotal;
 
 $(document).ready(function () {
     $("#tableBuy").hide();

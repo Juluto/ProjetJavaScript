@@ -91,9 +91,17 @@ angular.module('myApp').controller('listAction', ['$scope', '$http', function ($
         for (let i = 0; i < response.data.length; i++) {
             $http.get("http://localhost:3000/stock/" + response.data[i].name).then(success, error);
             function success(stock) {
+                response.data[i].benefice = (response.data[i].quantity * stock.data.body.delayedPrice) - (response.data[i].price * response.data[i].quantity);
+                if (response.data[i].benefice > 0) {
+                    response.data[i].benefice = "+" + response.data[i].benefice;
+                    $("#benefice" + response.data[i].name).css('color', 'green');
+                } else if (response.data[i].benefice == 0) {
+                    $("#benefice" + response.data[i].name).css('color', 'black');
+                } else if (response.data[i].benefice < 0) {
+                    $("#benefice" + response.data[i].name).css('color', 'red');
+                }
                 response.data[i].price = stock.data.body.delayedPrice;
                 response.data[i].totalAction = stock.data.body.delayedPrice * response.data[i].quantity;
-                response.data[i].benefice = response.data[i].price - stock.data.body.delayedPrice;
             }
             function error(error) {
                 console.log(error);
@@ -131,6 +139,23 @@ angular.module('myApp').controller('listAction', ['$scope', '$http', function ($
                 $scope.beneficeTotal = (response.data[0].quantity * responsePriceAction.data.body.delayedPrice) - (response.data[0].price * response.data[0].quantity) + " $";
                 priceBenefice = response.data[0].price;
                 benefice = responsePriceAction.data.body.delayedPrice - response.data[0].price;
+                if (benefice > 0) {
+                    $scope.benefice = "+" + $scope.benefice;
+                    $("#benefice").css('color', 'green');
+                } else if (benefice == 0) {
+                    $("#benefice").css('color', 'black');
+                } else if (benefice < 0) {
+                    $("#benefice").css('color', 'red');
+                }
+                beneficeTotal = (response.data[0].quantity * responsePriceAction.data.body.delayedPrice) - (response.data[0].price * response.data[0].quantity);
+                if (beneficeTotal > 0) {
+                    $scope.beneficeTotal = "+" + $scope.beneficeTotal;
+                    $("#beneficeTotal").css('color', 'green');
+                } else if (beneficeTotal == 0) {
+                    $("#beneficeTotal").css('color', 'black');
+                } else if (beneficeTotal < 0) {
+                    $("#beneficeTotal").css('color', 'red');
+                }
             }
             function errorPriceAction(error) {
                 console.log(error);

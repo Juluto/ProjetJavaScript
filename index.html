@@ -108,7 +108,7 @@
                                     <td>{{x.price}} $</td>
                                     <td>{{x.quantity}}</td>
                                     <td>{{x.totalAction}} $</td>
-                                    <td>{{x.benefice}} $</td>
+                                    <td id="benefice{{x.name}}" class="benefice">{{x.benefice}} $</td>
                                     <td>
                                         <a href="#" class="btn btn-primary" role="button" ng-click="seeAction()" ng-value="x.name">Voir</a>
                                     </td>
@@ -163,7 +163,7 @@
                             </tr>
                             <tr>
                                 <td>Bénéfice :</td>
-                                <td id="benefice" ng-model="benefice">{{benefice}}</td>
+                                <td id="benefice" class="benefice" ng-model="benefice">{{benefice}}</td>
                             </tr>
                             <tr>
                                 <td></td>
@@ -173,7 +173,7 @@
                             </tr>
                             <tr>
                                 <th>Vendre tout</th>
-                                <td>Bénéfice total : <div id="beneficeTotal" ng-model="beneficeTotal">{{beneficeTotal}}</div></td>
+                                <td>Bénéfice total : <div id="beneficeTotal" class="benefice" ng-model="beneficeTotal">{{beneficeTotal}}</div></td>
                             </tr>
                             <tr>
                                 <td>Gain : {{gainTotal}}</td>
