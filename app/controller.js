@@ -29,7 +29,7 @@ angular.module('myApp').controller('buyAction', ['$scope', '$http', function ($s
         var quantityAlreadyBuy;
         var priceAlreadyBuy;
         quantityBuy = parseInt(quantityBuy);
-        priceBuy = parseInt(priceBuy);
+        priceBuy = parseFloat(priceBuy);
         var data = {
             'name': $scope.nameFound,
             'quantity': quantityBuy,
