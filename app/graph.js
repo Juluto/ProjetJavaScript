@@ -1,6 +1,6 @@
 var label;
 var x = [];
-var data = [];
+var dataGraph = [];
 
 function drawGraph() {
     var ctx = document.getElementById('myChart').getContext('2d');
@@ -14,7 +14,7 @@ function drawGraph() {
             datasets: [{
                 label: label,
                 borderColor: 'rgb(100, 149, 237)',
-                data: data,
+                data: dataGraph,
             }]
         },
 

@@ -23,10 +23,10 @@ angular.module('myApp').controller('buyAction', ['$scope', '$http', function ($s
                 function successCallBack(responseHistory) {
                     label = response.data.body.symbol;
                     x = [];
-                    data = [];
+                    dataGraph = [];
                     for (let i = 0; i < responseHistory.data.body.length; i++) {
                         x.push(responseHistory.data.body[i].date);
-                        data.push(responseHistory.data.body[i].close)
+                        dataGraph.push(responseHistory.data.body[i].close)
                     }
                     drawGraph();
                 }
@@ -198,22 +198,34 @@ angular.module('myApp').controller('listAction', ['$scope', '$http', function ($
     $scope.sellAction = function () {
         $scope.quantity = parseInt($scope.quantity);
         $scope.quantitySell = parseInt($scope.quantitySell);
+        if (isNaN($scope.quantitySell)) {
+            $scope.quantitySell = 1;
+        }
         $scope.ownBuy = parseFloat($scope.ownBuy);
-        $scope.price =parseFloat($scope.price);
-        var dataModified = {
-            'name': $scope.symbol,
-            'quantity': $scope.quantity - $scope.quantitySell,
-            'price': $scope.ownBuy - ($scope.quantitySell * $scope.price)
-        };
-        $http.put("http://localhost:3000/buyAction", dataModified, {
-            headers: {
-                'Content-Type': 'application/json',
-                'Accept': 'application/json'
-            }
-        }).then(function (response) {
-            window.location.reload();
-        }, function error(error) {
-            console.log(error);
-        });
+        $scope.price = parseFloat($scope.price);
+        if ($scope.quantity == $scope.quantitySell) {
+            $http.delete("http://localhost:3000/sellAction/" + $scope.symbol)
+                .then(function (response) {
+                    window.location.reload();
+                }, function error(error) {
+                    console.log(error);
+                });
+        } else {
+            var dataModified = {
+                'name': $scope.symbol,
+                'quantity': $scope.quantity - $scope.quantitySell,
+                'price': $scope.ownBuy - ($scope.quantitySell * $scope.price)
+            };
+            $http.put("http://localhost:3000/buyAction", dataModified, {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                }
+            }).then(function (response) {
+                window.location.reload();
+            }, function error(error) {
+                console.log(error);
+            });
+        }
     }
 }]);
