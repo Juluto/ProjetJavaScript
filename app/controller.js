@@ -170,9 +170,31 @@ angular.module('myApp').controller('listAction', ['$scope', '$http', function ($
         $("#tableSell").show();
     }
 
-    $scope.sellAction = function () {
+    $scope.sellAllAction = function () {
         $http.delete("http://localhost:3000/sellAction/" + this.symbol)
-        .then(function (response) {
+            .then(function (response) {
+                window.location.reload();
+            }, function error(error) {
+                console.log(error);
+            });
+    }
+
+    $scope.sellAction = function () {
+        $scope.quantity = parseInt($scope.quantity);
+        $scope.quantitySell = parseInt($scope.quantitySell);
+        $scope.ownBuy = parseFloat($scope.ownBuy);
+        $scope.price =parseFloat($scope.price);
+        var dataModified = {
+            'name': $scope.symbol,
+            'quantity': $scope.quantity - $scope.quantitySell,
+            'price': $scope.ownBuy - ($scope.quantitySell * $scope.price)
+        };
+        $http.put("http://localhost:3000/buyAction", dataModified, {
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            }
+        }).then(function (response) {
             window.location.reload();
         }, function error(error) {
             console.log(error);

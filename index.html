@@ -139,27 +139,27 @@
                             </tr>
                             <tr>
                                 <th>Symbole</th>
-                                <td>{{symbol}}</td>
+                                <td ng-model="symbol">{{symbol}}</td>
                             </tr>
                             <tr>
                                 <th>Prix d'achat</th>
-                                <td>{{ownBuy}}</td>
+                                <td ng-model="ownBuy">{{ownBuy}}</td>
                             </tr>
                             <tr>
                                 <th>Nombre achetés</th>
-                                <td>{{quantity}}</td>
+                                <td ng-model="quantity">{{quantity}}</td>
                             </tr>
                             <tr>
                                 <th>Prix actuel</th>
-                                <td>{{price}}</td>
+                                <td ng-model="price">{{price}}</td>
                             </tr>
                             <tr>
                                 <th>Vendre</th>
                             </tr>
                             <tr>
                                 <td>Quantité :</td>
-                                <td ng-model="quantitySell">
-                                    <input class="number" id="numberSell" type="number" min="1" max="{{quantity}}" required>
+                                <td>
+                                    <input class="number" id="numberSell" type="number" min="1" max="{{quantity}}" ng-model="quantitySell" required>
                                 </td>
                             </tr>
                             <tr>
@@ -185,7 +185,7 @@
                             <tr>
                                 <td>Gain : {{gainTotal}}</td>
                                 <td>
-                                    <a href="#" class="btn btn-primary" role="button" ng-click="sellAction()" ng-value="symbol">Vendre tout</a>
+                                    <a href="#" class="btn btn-primary" role="button" ng-click="sellAllAction()" ng-value="symbol">Vendre tout</a>
                                 </td>
                             </tr>
                         </form>
