@@ -9,6 +9,7 @@ var gain;
 var priceBenefice;
 var benefice;
 var beneficeTotal;
+var nbBuy;
 
 $(document).ready(function () {
     $("#tableBuy").hide();
@@ -46,7 +47,7 @@ $(document).ready(function () {
                 gain = priceSell * quantitySell;
                 $("#gain").empty();
                 $("#gain").append(gain + " $");
-                benefice = (priceSell - priceBenefice) * quantitySell;
+                benefice = ((priceSell * nbBuy) - priceBenefice) * quantitySell;
                 $("#benefice").empty();
                 $("#benefice").append(benefice + " $");
             }

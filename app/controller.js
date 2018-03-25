@@ -128,6 +128,7 @@ angular.module('myApp').controller('listAction', ['$scope', '$http', function ($
             }
             $scope.symbol = response.data[0].name;
             $scope.quantity = response.data[0].quantity;
+            nbBuy = response.data[0].quantity;
             $scope.ownBuy = response.data[0].price + " $";
             $http.get("http://localhost:3000/stock/" + response.data[0].name).then(successPriceAction, errorPriceAction);
             function successPriceAction(responsePriceAction) {
