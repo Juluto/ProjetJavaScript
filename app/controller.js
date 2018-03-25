@@ -119,10 +119,18 @@ angular.module('myApp').controller('listAction', ['$scope', '$http', function ($
             }
             $scope.symbol = response.data[0].name;
             $scope.quantity = response.data[0].quantity;
-            $scope.ownBuy = response.data[0].price;
+            $scope.ownBuy = response.data[0].price + " $";
             $http.get("http://localhost:3000/stock/" + response.data[0].name).then(successPriceAction, errorPriceAction);
             function successPriceAction(responsePriceAction) {
                 $scope.price = responsePriceAction.data.body.delayedPrice + " $";
+                $("#gain").empty();
+                $("#gain").append(responsePriceAction.data.body.delayedPrice + " $");
+                priceSell = responsePriceAction.data.body.delayedPrice;
+                $scope.gainTotal = response.data[0].quantity * responsePriceAction.data.body.delayedPrice + " $";
+                $scope.benefice = responsePriceAction.data.body.delayedPrice - (response.data[0].price / 1) + " $";
+                $scope.beneficeTotal = (response.data[0].quantity * responsePriceAction.data.body.delayedPrice) - (response.data[0].price * response.data[0].quantity) + " $";
+                priceBenefice = response.data[0].price;
+                benefice = responsePriceAction.data.body.delayedPrice - response.data[0].price;
             }
             function errorPriceAction(error) {
                 console.log(error);
@@ -131,6 +139,7 @@ angular.module('myApp').controller('listAction', ['$scope', '$http', function ($
         function errorCallBack(error) {
             console.log(error);
         }
+        $("#numberSell").val(1);
         $("#tableSell").show();
     }
 }]);

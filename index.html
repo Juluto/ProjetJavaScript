@@ -154,12 +154,16 @@
                             <tr>
                                 <td>Quantité :</td>
                                 <td ng-model="quantitySell">
-                                    <input id="numberBuy" type="number" min="1">
+                                    <input id="numberSell" type="number" min="1">
                                 </td>
                             </tr>
                             <tr>
+                                <td>Gain :</td>
+                                <td id="gain" ng-model="priceSell"></td>
+                            </tr>
+                            <tr>
                                 <td>Bénéfice :</td>
-                                <td></td>
+                                <td id="benefice" ng-model="benefice">{{benefice}}</td>
                             </tr>
                             <tr>
                                 <td></td>
@@ -169,10 +173,10 @@
                             </tr>
                             <tr>
                                 <th>Vendre tout</th>
-                                <td>Bénéfice total : </td>
+                                <td>Bénéfice total : <div id="beneficeTotal" ng-model="beneficeTotal">{{beneficeTotal}}</div></td>
                             </tr>
                             <tr>
-                                <td></td>
+                                <td>Gain : {{gainTotal}}</td>
                                 <td><a href="#" class="btn btn-primary" role="button" ng-click="seeAction()" ng-value="x.name">Vendre tout</a></td>
                             </tr>
                         </form>
