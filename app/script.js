@@ -27,6 +27,7 @@ $(document).ready(function () {
                 $("#totalBuy").empty();
             } else {
                 totalBuy = priceBuy * quantityBuy;
+                totalBuy = Number.parseFloat(totalBuy).toFixed(2);
                 $("#totalBuy").empty();
                 $("#totalBuy").append(totalBuy + " $");
             }
@@ -45,13 +46,16 @@ $(document).ready(function () {
                 $("#gain").empty();
             } else {
                 gain = priceSell * quantitySell;
+                gain = Number.parseFloat(gain).toFixed(2);
                 $("#gain").empty();
                 $("#gain").append(gain + " $");
                 benefice = (((nbBuy * priceSell) - priceBenefice) / nbBuy) * quantitySell;
                 $("#benefice").empty();
                 if (benefice > 0) {
+                    benefice = Number.parseFloat(benefice).toFixed(2);
                     $("#benefice").append("+" + benefice + " $");
                 } else {
+                    benefice = Number.parseFloat(benefice).toFixed(2);
                     $("#benefice").append(benefice + " $");
                 }
             }

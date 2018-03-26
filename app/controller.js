@@ -109,15 +109,17 @@ angular.module('myApp').controller('listAction', ['$scope', '$http', function ($
             function success(stock) {
                 response.data[i].benefice = (response.data[i].quantity * stock.data.body.delayedPrice) - response.data[i].price;
                 if (response.data[i].benefice > 0) {
+                    response.data[i].benefice = Number.parseFloat(response.data[i].benefice).toFixed(2);
                     response.data[i].benefice = "+" + response.data[i].benefice;
                     $("#benefice" + response.data[i].name).css('color', 'green');
                 } else if (response.data[i].benefice == 0) {
                     $("#benefice" + response.data[i].name).css('color', 'black');
                 } else if (response.data[i].benefice < 0) {
+                    response.data[i].benefice = Number.parseFloat(response.data[i].benefice).toFixed(2);
                     $("#benefice" + response.data[i].name).css('color', 'red');
                 }
                 response.data[i].price = stock.data.body.delayedPrice;
-                response.data[i].totalAction = stock.data.body.delayedPrice * response.data[i].quantity;
+                response.data[i].totalAction = Number.parseFloat(stock.data.body.delayedPrice * response.data[i].quantity).toFixed(2);
             }
             function error(error) {
                 console.log(error);
@@ -143,35 +145,49 @@ angular.module('myApp').controller('listAction', ['$scope', '$http', function ($
             $scope.symbol = response.data[0].name;
             $scope.quantity = response.data[0].quantity;
             nbBuy = response.data[0].quantity;
-            $scope.ownBuy = response.data[0].price + " $";
+            $scope.ownBuy = response.data[0].price;
+            $scope.ownBuy = Number.parseFloat($scope.ownBuy).toFixed(2);
+            $scope.ownBuy = $scope.ownBuy + " $";
             $http.get("http://localhost:3000/stock/" + response.data[0].name).then(successPriceAction, errorPriceAction);
             function successPriceAction(responsePriceAction) {
-                $scope.price = responsePriceAction.data.body.delayedPrice + " $";
+                $scope.price = responsePriceAction.data.body.delayedPrice;
+                $scope.price = Number.parseFloat($scope.price).toFixed(2);
+                $scope.price = $scope.price + " $";
                 $("#gain").empty();
-                $("#gain").append(responsePriceAction.data.body.delayedPrice + " $");
+                $("#gain").append(Number.parseFloat(responsePriceAction.data.body.delayedPrice).toFixed(2) + " $");
                 benefice = ((response.data[0].quantity * responsePriceAction.data.body.delayedPrice) - response.data[0].price) / response.data[0].quantity;
                 $("#benefice").empty();
                 priceSell = responsePriceAction.data.body.delayedPrice;
-                $scope.gainTotal = response.data[0].quantity * responsePriceAction.data.body.delayedPrice + " $";
+                $scope.gainTotal = response.data[0].quantity * responsePriceAction.data.body.delayedPrice;
+                $scope.gainTotal = Number.parseFloat($scope.gainTotal).toFixed(2);
+                $scope.gainTotal = $scope.gainTotal + " $";
                 $scope.beneficeTotal = (response.data[0].quantity * responsePriceAction.data.body.delayedPrice) - response.data[0].price + " $";
                 priceBenefice = response.data[0].price;
+                priceBenefice = Number.parseFloat(priceBenefice).toFixed(2);
                 if (benefice > 0) {
+                    benefice = Number.parseFloat(benefice).toFixed(2);
                     $("#benefice").append("+" + benefice + " $");
                     $("#benefice").css('color', 'green');
                 } else if (benefice == 0) {
+                    benefice = Number.parseFloat(benefice).toFixed(2);
                     $("#benefice").append(benefice + " $");
                     $("#benefice").css('color', 'black');
                 } else if (benefice < 0) {
+                    benefice = Number.parseFloat(benefice).toFixed(2);
                     $("#benefice").append(benefice + " $");
                     $("#benefice").css('color', 'red');
                 }
                 beneficeTotal = (response.data[0].quantity * responsePriceAction.data.body.delayedPrice) - response.data[0].price;
+                beneficeTotal = Number.parseFloat(beneficeTotal).toFixed(2);
                 if (beneficeTotal > 0) {
-                    $scope.beneficeTotal = "+" + $scope.beneficeTotal;
+                    $scope.beneficeTotal = Number.parseFloat($scope.beneficeTotal).toFixed(2);
+                    $scope.beneficeTotal = "+" + $scope.beneficeTotal + " $";
                     $("#beneficeTotal").css('color', 'green');
                 } else if (beneficeTotal == 0) {
                     $("#beneficeTotal").css('color', 'black');
                 } else if (beneficeTotal < 0) {
+                    $scope.beneficeTotal = Number.parseFloat($scope.beneficeTotal).toFixed(2);
+                    $scope.beneficeTotal = $scope.beneficeTotal + " $";
                     $("#beneficeTotal").css('color', 'red');
                 }
             }
