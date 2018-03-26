@@ -1,3 +1,14 @@
+angular.module('myApp').controller('portFolio', ['$scope', '$http', function ($scope, $http) {
+
+    $http.get("http://localhost:3000/portfolio/").then(successCallBack, errorCallBack);
+    function successCallBack(response) {
+        $scope.portFolio = Number.parseFloat(response.data[0].portFolio).toFixed(2);
+    }
+    function errorCallBack(error) {
+        console.log(error);
+    }
+}]);
+
 angular.module('myApp').controller('buyAction', ['$scope', '$http', function ($scope, $http) {
 
     $scope.searchAction = function () {
