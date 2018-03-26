@@ -55,7 +55,6 @@ angular.module('myApp').controller('buyAction', ['$scope', '$http', function ($s
 
         $http.get("http://localhost:3000/buyAction/").then(successCallBack, errorCallBack);
         function successCallBack(response) {
-            console.log(response);
             for (let i = 0; i < response.data.length; i++) {
                 if (response.data[i].name === $scope.nameFound) {
                     actionAlreadyBuy = true;
@@ -134,7 +133,6 @@ angular.module('myApp').controller('listAction', ['$scope', '$http', function ($
     $scope.seeAction = function () {
         $http.get("http://localhost:3000/action/" + this.x.name).then(successCallBack, errorCallBack);
         function successCallBack(response) {
-            console.log(response);
             $http.get("http://localhost:3000/nameAction/" + response.data[0].name).then(successCallBack, errorCallBack);
             function successCallBack(responseNameAction) {
                 $scope.name = responseNameAction.data.body.companyName;
@@ -151,18 +149,20 @@ angular.module('myApp').controller('listAction', ['$scope', '$http', function ($
                 $scope.price = responsePriceAction.data.body.delayedPrice + " $";
                 $("#gain").empty();
                 $("#gain").append(responsePriceAction.data.body.delayedPrice + " $");
+                benefice = ((response.data[0].quantity * responsePriceAction.data.body.delayedPrice) - response.data[0].price) / response.data[0].quantity;
+                $("#benefice").empty();
                 priceSell = responsePriceAction.data.body.delayedPrice;
                 $scope.gainTotal = response.data[0].quantity * responsePriceAction.data.body.delayedPrice + " $";
-                $scope.benefice = responsePriceAction.data.body.delayedPrice - (response.data[0].price / response.data[0].quantity) + " $";
                 $scope.beneficeTotal = (response.data[0].quantity * responsePriceAction.data.body.delayedPrice) - response.data[0].price + " $";
                 priceBenefice = response.data[0].price;
-                benefice = responsePriceAction.data.body.delayedPrice - (response.data[0].price / response.data[0].quantity);
                 if (benefice > 0) {
-                    $scope.benefice = "+" + $scope.benefice;
+                    $("#benefice").append("+" + benefice + " $");
                     $("#benefice").css('color', 'green');
                 } else if (benefice == 0) {
+                    $("#benefice").append(benefice + " $");
                     $("#benefice").css('color', 'black');
                 } else if (benefice < 0) {
+                    $("#benefice").append(benefice + " $");
                     $("#benefice").css('color', 'red');
                 }
                 beneficeTotal = (response.data[0].quantity * responsePriceAction.data.body.delayedPrice) - response.data[0].price;
@@ -182,6 +182,7 @@ angular.module('myApp').controller('listAction', ['$scope', '$http', function ($
         function errorCallBack(error) {
             console.log(error);
         }
+        
         $("#numberSell").val(1);
         $("#tableSell").show();
     }

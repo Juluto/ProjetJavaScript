@@ -2,7 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="b5794f18-cc6b-4e5c-9c91-72df61aa86a2" name="Default" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change beforePath="$PROJECT_DIR$/app/controller.js" afterPath="$PROJECT_DIR$/app/controller.js" />
+      <change beforePath="$PROJECT_DIR$/app/script.js" afterPath="$PROJECT_DIR$/app/script.js" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -258,12 +259,12 @@
       <workItem from="1521800787725" duration="2047000" />
       <workItem from="1521884349244" duration="778000" />
       <workItem from="1522047450300" duration="1134000" />
-      <workItem from="1522051426761" duration="151000" />
+      <workItem from="1522051426761" duration="1247000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="4771000" />
+    <option name="totallyTimeSpent" value="5867000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-13" y="-13" width="2762" height="1770" extended-state="7" />

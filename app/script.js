@@ -47,9 +47,13 @@ $(document).ready(function () {
                 gain = priceSell * quantitySell;
                 $("#gain").empty();
                 $("#gain").append(gain + " $");
-                benefice = ((priceSell * nbBuy) - priceBenefice) * quantitySell;
+                benefice = (((nbBuy * priceSell) - priceBenefice) / nbBuy) * quantitySell;
                 $("#benefice").empty();
-                $("#benefice").append(benefice + " $");
+                if (benefice > 0) {
+                    $("#benefice").append("+" + benefice + " $");
+                } else {
+                    $("#benefice").append(benefice + " $");
+                }
             }
         }
     });
