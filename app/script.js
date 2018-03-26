@@ -16,6 +16,7 @@ $(document).ready(function () {
     $("#notFoundBuy").hide();
     $("#numberBuy").val(1);
     $("#tableSell").hide();
+    $("#insufficient").hide();
 
     $("#numberBuy").on('input', function () {
         if ($(this).val() == "") {

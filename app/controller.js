@@ -12,6 +12,7 @@ angular.module('myApp').controller('portFolio', ['$scope', '$http', function ($s
 angular.module('myApp').controller('buyAction', ['$scope', '$http', function ($scope, $http) {
 
     $scope.searchAction = function () {
+        $("#insufficient").hide();
         $http.get("http://localhost:3000/stock/" + $scope.searchBar).then(successCallBack, errorCallBack);
         function successCallBack(response) {
             if (response.data.statusCode == 404) {
@@ -53,58 +54,90 @@ angular.module('myApp').controller('buyAction', ['$scope', '$http', function ($s
     }
 
     $scope.buyAction = function () {
+        var canBuy = false;
         var actionAlreadyBuy = false;
         var quantityAlreadyBuy;
         var priceAlreadyBuy;
         quantityBuy = parseInt(quantityBuy);
         totalBuy = parseFloat(totalBuy);
-        var data = {
-            'name': $scope.nameFound,
-            'quantity': quantityBuy,
-            'price': totalBuy
-        };
 
-        $http.get("http://localhost:3000/buyAction/").then(successCallBack, errorCallBack);
-        function successCallBack(response) {
-            for (let i = 0; i < response.data.length; i++) {
-                if (response.data[i].name === $scope.nameFound) {
-                    actionAlreadyBuy = true;
-                    quantityAlreadyBuy = response.data[i].quantity;
-                    priceAlreadyBuy = response.data[i].price;
+        $http.get("http://localhost:3000/portfolio/").then(successPortFolioCallBack, errorPortFolioCallBack);
+        function successPortFolioCallBack(responsePortFolio) {
+            if (responsePortFolio.data[0].portFolio >= totalBuy) {
+                canBuy = true;
+
+                if (canBuy) {
+                    var data = {
+                        'name': $scope.nameFound,
+                        'quantity': quantityBuy,
+                        'price': totalBuy
+                    };
+
+                    $http.get("http://localhost:3000/buyAction/").then(successCallBack, errorCallBack);
+                    function successCallBack(response) {
+                        for (let i = 0; i < response.data.length; i++) {
+                            if (response.data[i].name === $scope.nameFound) {
+                                actionAlreadyBuy = true;
+                                quantityAlreadyBuy = response.data[i].quantity;
+                                priceAlreadyBuy = response.data[i].price;
+                            }
+                        }
+                        if (actionAlreadyBuy) {
+                            var dataModified = {
+                                'name': $scope.nameFound,
+                                'quantity': quantityBuy + quantityAlreadyBuy,
+                                'price': totalBuy + priceAlreadyBuy
+                            };
+                            $http.put("http://localhost:3000/buyAction", dataModified, {
+                                headers: {
+                                    'Content-Type': 'application/json',
+                                    'Accept': 'application/json'
+                                }
+                            }).then(function (response) {
+
+                            }, function error(error) {
+                                console.log(error);
+                            });
+                        } else {
+                            $http.post("http://localhost:3000/buyAction", data, {
+                                headers: {
+                                    'Content-Type': 'application/json',
+                                    'Accept': 'application/json'
+                                }
+                            }).then(function (response) {
+
+                            }, function error(error) {
+                                console.log(error);
+                            });
+                        }
+                        var dataModified = {
+                            'portFolio': responsePortFolio.data[0].portFolio - totalBuy
+                        };
+                        $http.put("http://localhost:3000/portfolio", dataModified, {
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'Accept': 'application/json'
+                            }
+                        }).then(function (response) {
+                            window.location.reload();
+                        }, function error(error) {
+                            console.log(error);
+                        });
+                    }
+                    function errorCallBack(error) {
+                        console.log(error);
+                    }
                 }
-            }
-            if (actionAlreadyBuy) {
-                var dataModified = {
-                    'name': $scope.nameFound,
-                    'quantity': quantityBuy + quantityAlreadyBuy,
-                    'price': totalBuy + priceAlreadyBuy
-                };
-                $http.put("http://localhost:3000/buyAction", dataModified, {
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Accept': 'application/json'
-                    }
-                }).then(function (response) {
-                    window.location.reload();
-                }, function error(error) {
-                    console.log(error);
-                });
             } else {
-                $http.post("http://localhost:3000/buyAction", data, {
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Accept': 'application/json'
-                    }
-                }).then(function (response) {
-                    window.location.reload();
-                }, function error(error) {
-                    console.log(error);
-                });
+                $("#insufficient").show();
             }
         }
-        function errorCallBack(error) {
-            console.log(error);
+        function errorPortFolioCallBack(errorPortFolio) {
+            console.log(errorPortFolio);
         }
+
+
+
     }
 }]);
 
@@ -229,26 +262,67 @@ angular.module('myApp').controller('listAction', ['$scope', '$http', function ($
     }
 
     $scope.sellAllAction = function () {
+        var gainTotal = Number.parseFloat(this.gainTotal).toFixed(2);
+        gainTotal = Number.parseFloat(gainTotal);
         $http.delete("http://localhost:3000/sellAction/" + this.symbol)
             .then(function (response) {
-                window.location.reload();
+                $http.get("http://localhost:3000/portfolio")
+                    .then(function (responsePortFolio) {
+                        var dataModified = {
+                            'portFolio': responsePortFolio.data[0].portFolio + gainTotal
+                        };
+                        $http.put("http://localhost:3000/portfolio", dataModified, {
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'Accept': 'application/json'
+                            }
+                        }).then(function (response) {
+                            window.location.reload();
+                        }, function error(error) {
+                            console.log(error);
+                        });
+                    }, function error(error) {
+                        console.log(error);
+                    });
             }, function error(error) {
                 console.log(error);
             });
     }
 
     $scope.sellAction = function () {
+        var gainTotal = Number.parseFloat(this.gainTotal).toFixed(2);
+        gainTotal = Number.parseFloat(gainTotal);
+        var price = Number.parseFloat($scope.price);
         $scope.quantity = parseInt($scope.quantity);
         $scope.quantitySell = parseInt($scope.quantitySell);
         if (isNaN($scope.quantitySell)) {
             $scope.quantitySell = 1;
         }
+        var gain = Number.parseFloat($scope.quantitySell * price).toFixed(2);
+        gain = Number.parseFloat(gain);
         $scope.ownBuy = parseFloat($scope.ownBuy);
         $scope.price = parseFloat($scope.price);
         if ($scope.quantity == $scope.quantitySell) {
             $http.delete("http://localhost:3000/sellAction/" + $scope.symbol)
                 .then(function (response) {
-                    window.location.reload();
+                    $http.get("http://localhost:3000/portfolio")
+                        .then(function (responsePortFolio) {
+                            var dataModified = {
+                                'portFolio': responsePortFolio.data[0].portFolio + gainTotal
+                            };
+                            $http.put("http://localhost:3000/portfolio", dataModified, {
+                                headers: {
+                                    'Content-Type': 'application/json',
+                                    'Accept': 'application/json'
+                                }
+                            }).then(function (response) {
+                                window.location.reload();
+                            }, function error(error) {
+                                console.log(error);
+                            });
+                        }, function error(error) {
+                            console.log(error);
+                        });
                 }, function error(error) {
                     console.log(error);
                 });
@@ -264,7 +338,24 @@ angular.module('myApp').controller('listAction', ['$scope', '$http', function ($
                     'Accept': 'application/json'
                 }
             }).then(function (response) {
-                window.location.reload();
+                $http.get("http://localhost:3000/portfolio")
+                    .then(function (responsePortFolio) {
+                        var dataModified = {
+                            'portFolio': responsePortFolio.data[0].portFolio + gain
+                        };
+                        $http.put("http://localhost:3000/portfolio", dataModified, {
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'Accept': 'application/json'
+                            }
+                        }).then(function (response) {
+                            window.location.reload();
+                        }, function error(error) {
+                            console.log(error);
+                        });
+                    }, function error(error) {
+                        console.log(error);
+                    });
             }, function error(error) {
                 console.log(error);
             });
