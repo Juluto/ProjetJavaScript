@@ -31,7 +31,7 @@ angular.module('myApp').controller('buyAction', ['$scope', '$http', function ($s
                     drawGraph();
                 }
                 function errorCallBack(responseHistory) {
-                    console.log(error);
+                    console.log(responseHistory);
                 }
 
             }
@@ -194,11 +194,25 @@ angular.module('myApp').controller('listAction', ['$scope', '$http', function ($
             function errorPriceAction(error) {
                 console.log(error);
             }
+            $http.get("http://localhost:3000/historyAction/" + response.data[0].name).then(successHistoryCallBack, errorHistoryCallBack);
+            function successHistoryCallBack(responseHistory) {
+                label = response.data[0].name;
+                x = [];
+                dataGraph = [];
+                for (let i = 0; i < responseHistory.data.body.length; i++) {
+                    x.push(responseHistory.data.body[i].date);
+                    dataGraph.push(responseHistory.data.body[i].close)
+                }
+                drawGraph();
+            }
+            function errorHistoryCallBack(responseHistory) {
+                console.log(responseHistory);
+            }
         }
         function errorCallBack(error) {
             console.log(error);
         }
-        
+
         $("#numberSell").val(1);
         $("#tableSell").show();
     }
